@@ -283,19 +283,17 @@
 ;; Config.Packages.Programming.Clojure
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package clojure-mode
+  :ensure t)
+
 (use-package cider
   :ensure t
   :if (executable-find "lein")
   :config
-  (add-hook 'clojure-mode-hook
-            (lambda ()
-              (cider-mode t)))
   (setq nrepl-hide-special-buffers t)
   (setq nrepl-buffer-name-show-port t)
   (add-hook 'cider-repl-mode-hook 'company-mode)
-  (add-hook 'cider-mode-hook 'company-mode)
-  :mode
-  (("\\.clj$" . cider-mode)))
+  (add-hook 'cider-mode-hook 'company-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Latex
