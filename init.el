@@ -222,15 +222,19 @@
   (load-theme 'paper t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Git
+;; Config.Packages.Programming.Lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package magit
+(use-package paredit
   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.CL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package lisp-mode
+  :config
+  (add-hook 'lisp-mode-hook 'paredit-mode))
 
 (setq inferior-lisp-program
       (or (executable-find "sbcl")
@@ -258,11 +262,29 @@
       (call-interactively 'slime-load-file)))
   (define-key slime-repl-mode-map (kbd "C-c C-r") 'slime-restart-inferior-lisp)
   (define-key slime-repl-mode-map (kbd "C-c C-q") 'slime-repl-quit)
-  (add-hook 'common-lisp-mode
+  (add-hook 'lisp-mode-hook
             (lambda ()
               (slime-mode t)))
   :mode
-  (("\\.lisp$" . common-lisp-mode)))
+  (("\\.lisp$" . lisp-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Clojure
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package clojure-mode
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook 'paredit-mode))
+
+(use-package cider
+  :ensure t
+  :if (executable-find "lein")
+  :config
+  (setq nrepl-hide-special-buffers t)
+  (setq nrepl-buffer-name-show-port t)
+  (add-hook 'cider-repl-mode-hook 'company-mode)
+  (add-hook 'cider-mode-hook 'company-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
@@ -277,30 +299,3 @@
       (interactive)
       (call-interactively 'save-buffer)
       (call-interactively 'python-shell-send-file))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.Clojure
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package clojure-mode
-  :ensure t)
-
-(use-package cider
-  :ensure t
-  :if (executable-find "lein")
-  :config
-  (setq nrepl-hide-special-buffers t)
-  (setq nrepl-buffer-name-show-port t)
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (add-hook 'cider-mode-hook 'company-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.Latex
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(when (and window-system (eq 'darwin system-type))
-  (setenv (concat "/usr/texbin" (getenv "PATH"))))
-
-(use-package yatex
-  :ensure t
-  :if (executable-find "ptex"))
