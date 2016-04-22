@@ -262,9 +262,7 @@
       (call-interactively 'slime-load-file)))
   (define-key slime-repl-mode-map (kbd "C-c C-r") 'slime-restart-inferior-lisp)
   (define-key slime-repl-mode-map (kbd "C-c C-q") 'slime-repl-quit)
-  (add-hook 'lisp-mode-hook
-            (lambda ()
-              (slime-mode t)))
+  (add-hook 'lisp-mode-hook 'slime-mode)
   :mode
   (("\\.lisp$" . lisp-mode)))
 
