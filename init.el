@@ -99,8 +99,7 @@
 ;; Config.Network.SB
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(when (member (system-name)
-              '("C7OAPC15160289" "T7IRPC14000422"))
+(unless (member (system-name) '("rio.local"))
   (setq url-proxy-services
         '(("http" . "10.221.237.10:8080")
           ("https" . "10.221.237.10:8080"))))
