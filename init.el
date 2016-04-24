@@ -198,7 +198,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package atom-dark-theme
-  :disabled t
   :ensure t
   :if window-system
   :config
@@ -212,6 +211,7 @@
   (load-theme 'pastelmac t))
 
 (use-package autumn-light-theme
+  :disabled t
   :ensure t
   :if window-system
   :config
