@@ -142,6 +142,13 @@
   :bind
   (("M-x" . smex)))
 
+(use-package switch-window
+  :ensure t
+  :config
+  (setq switch-window-shortcut-style 'qwerty)
+  :bind
+  (("C-x o" . switch-window)))
+
 (use-package smooth-scroll
   :ensure t
   :config
