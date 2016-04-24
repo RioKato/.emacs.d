@@ -155,7 +155,9 @@
   (powerline-default-theme))
 
 (use-package neotree
-  :ensure t)
+  :ensure t
+  :config
+  (neotree))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Editor
