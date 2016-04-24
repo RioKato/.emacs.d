@@ -71,7 +71,8 @@
 
 (when window-system
   (menu-bar-mode -1)
-  (tool-bar-mode -1))
+  (tool-bar-mode -1)
+  (set-frame-parameter nil 'alpha 95))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.GUI.MAC
