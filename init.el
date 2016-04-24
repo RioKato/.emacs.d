@@ -233,6 +233,14 @@
   (load-theme 'paper t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.EWW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package eww
+  :config
+  (setq eww-search-prefix "https://www.google.co.jp/search?q="))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
