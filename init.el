@@ -245,7 +245,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package paredit
-  :ensure t)
+  :ensure t
+  :config
+  (setq neo-persist-show t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.CL
