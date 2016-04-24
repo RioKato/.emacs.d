@@ -163,7 +163,9 @@
   (powerline-default-theme))
 
 (use-package neotree
-  :ensure t)
+  :ensure t
+  :config
+  (setq neo-persist-show t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Editor
@@ -245,9 +247,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package paredit
-  :ensure t
-  :config
-  (setq neo-persist-show t))
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.CL
