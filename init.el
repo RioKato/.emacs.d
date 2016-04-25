@@ -304,8 +304,7 @@
   (setq cider-repl-display-help-banner nil)
   (setq cider-repl-use-pretty-printing t)
   (add-hook 'cider-repl-mode-hook 'company-mode)
-  (add-hook 'cider-mode-hook 'company-mode)
-  (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode))
+  (add-hook 'cider-mode-hook 'company-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
