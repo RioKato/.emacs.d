@@ -180,7 +180,7 @@
   (setq company-selection-wrap-around t)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-i") 'company-complete-selection))
+  (global-set-key (kbd "C-i") 'company-indent-or-complete-common))
 
 (use-package undo-tree
   :ensure t
