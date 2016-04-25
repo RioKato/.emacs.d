@@ -163,9 +163,7 @@
   (powerline-default-theme))
 
 (use-package neotree
-  :ensure t
-  :config
-  (setq neo-persist-show t))
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Editor
