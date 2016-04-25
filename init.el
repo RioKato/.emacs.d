@@ -57,6 +57,8 @@
   (winner-mode t)
   (global-set-key (kbd "C-x 4") 'winner-undo)
   (global-set-key (kbd "C-x 5") 'winner-redo))
+(when window-system
+  (global-set-key (kbd "<C-return>") 'toggle-frame-maximized))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Keymap.MAC
