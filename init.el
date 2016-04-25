@@ -304,7 +304,9 @@
   (setq cider-repl-display-help-banner nil)
   (setq cider-repl-use-pretty-printing t)
   (add-hook 'cider-repl-mode-hook 'company-mode)
-  (add-hook 'cider-mode-hook 'company-mode))
+  (add-hook 'cider-mode-hook 'company-mode)
+  (define-key cider-mode-map (kbd "C-c C-b") 'cider-interrupt)
+  (define-key cider-repl-mode-map (kbd "C-c C-b") 'cider-interrupt))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
