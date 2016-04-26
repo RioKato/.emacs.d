@@ -299,10 +299,16 @@
   :if (executable-find "lein")
   :config
   (setq inf-clojure-prompt-read-only nil)
-  (add-hook 'clojure-mode-hook #'eldoc-mode)
-  (add-hook 'inf-clojure-mode-hook #'eldoc-mode)
-  (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
-  (add-hook 'inf-clojure-mode-hook 'company-mode))
+  (add-hook 'clojure-mode-hook 'eldoc-mode)
+  (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
+  (add-hook 'inf-clojure-mode-hook 'company-mode)
+  (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (add-hook 'clojure-mode-hook 'clj-refactor-mode))
 
 (use-package cider
   :disabled t
