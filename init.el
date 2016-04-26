@@ -1,4 +1,5 @@
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.System
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -206,33 +207,29 @@
   (volatile-highlights-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.GUI
+;; Config.Packages.Theme
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package atom-dark-theme
   :ensure t
-  :if window-system
   :config
   (load-theme 'atom-dark t))
 
 (use-package pastelmac-theme
   :disabled t
   :ensure t
-  :if window-system
   :config
   (load-theme 'pastelmac t))
 
 (use-package autumn-light-theme
   :disabled t
   :ensure t
-  :if window-system
   :config
   (load-theme 'autumn-light t))
 
 (use-package paper-theme
   :disabled t
   :ensure t
-  :if window-system
   :config
   (load-theme 'paper t))
 
