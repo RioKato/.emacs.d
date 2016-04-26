@@ -165,7 +165,9 @@
   (powerline-default-theme))
 
 (use-package neotree
-  :ensure t)
+  :ensure t
+  :config
+  (setq neo-smart-open t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Editor
@@ -273,9 +275,7 @@
   :if inferior-lisp-program
   :config
   (setq slime-net-coding-system 'utf-8-unix)
-  (if (package-installed-p 'slime-company)
-      (slime-setup '(slime-repl slime-banner slime-fancy slime-company))
-    (slime-setup '(slime-repl slime-banner slime-fancy)))
+  (slime-setup '(slime-repl slime-banner slime-fancy slime-company))
   (define-key slime-mode-map (kbd "C-c C-l")
     (lambda ()
       (interactive)
