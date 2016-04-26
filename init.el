@@ -167,9 +167,24 @@
   (powerline-default-theme))
 
 (use-package neotree
+  :disabled t
   :ensure t
   :config
   (setq neo-smart-open t))
+
+(use-package sr-speedbar
+  :ensure t
+  :config
+  (sr-speedbar-close)
+  (setq speedbar-use-images nil)
+  (setq sr-speedbar-width 25)
+  (setq sr-speedbar-max-width 25)
+  (setq sr-speedbar-auto-refresh t)
+  (setq speedbar-show-unknown-files t)
+  (setq sr-speedbar-right-side nil)
+  (sr-speedbar-open)
+  (with-current-buffer sr-speedbar-buffer-name
+    (setq window-size-fixed 'width)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Editor
