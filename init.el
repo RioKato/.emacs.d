@@ -66,7 +66,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (eq system-type 'darwin)
-  (setq ns-command-modifier (quote meta)))
+  (setq mac-command-modifier 'meta))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.GUI
@@ -86,6 +86,7 @@
   (setenv "PATH" "/bin:/usr/bin:/usr/local/bin")
   (setq exec-path '("/bin" "/usr/bin" "/usr/local/bin"))
   (setq line-spacing 2)
+  (setq mac-allow-anti-aliasing t)
   (set-face-attribute 'default nil
                       :family "Courier New"
                       :height 150))
