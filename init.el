@@ -294,7 +294,18 @@
   :config
   (add-hook 'clojure-mode-hook 'paredit-mode))
 
+(use-package inf-clojure
+  :ensure t
+  :if (executable-find "lein")
+  :config
+  (setq inf-clojure-prompt-read-only nil)
+  (add-hook 'clojure-mode-hook #'eldoc-mode)
+  (add-hook 'inf-clojure-mode-hook #'eldoc-mode)
+  (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
+  (add-hook 'inf-clojure-mode-hook 'company-mode))
+
 (use-package cider
+  :disabled t
   :ensure t
   :if (executable-find "lein")
   :config
