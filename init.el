@@ -261,16 +261,45 @@
 ;; Config.Packages.Programming.Lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package paredit
-  :ensure t)
+(defun showmatch-close-paren ()
+  (interactive)
+  (insert ")")
+  (save-excursion
+    (backward-sexp)
+    (sit-for 1)))
+
+(defun showmatch-close-bracket ()
+  (interactive)
+  (insert "]")
+  (save-excursion
+    (backward-sexp)
+    (sit-for 1)))
+
+(defun showmatch-close-brace ()
+  (interactive)
+  (insert "}")
+  (save-excursion
+    (backward-sexp)
+    (sit-for 1)))
+
+(define-minor-mode showmatch-minor-mode
+  "vimlike showmatch"
+  :lighter "showmatch"
+  :keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd ")") 'showmatch-close-paren)
+    (define-key map (kbd "]") 'showmatch-close-bracket)
+    (define-key map (kbd "}") 'showmatch-close-brace)
+    (identity map)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.CL
+;; Config.Packages.Programming.Lisp.CL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package lisp-mode
   :config
-  (add-hook 'lisp-mode-hook 'paredit-mode))
+  (add-hook 'lisp-mode-hook 'show-paren-mode)
+  (add-hook 'lisp-mode-hook 'showmatch-minor-mode))
 
 (setq inferior-lisp-program
       (or (executable-find "sbcl")
@@ -301,44 +330,24 @@
   (("\\.lisp$" . lisp-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.Clojure
+;; Config.Packages.Programming.Lisp.Clojure
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package clojure-mode
   :ensure t
   :config
-  (add-hook 'clojure-mode-hook 'paredit-mode))
+  (add-hook 'clojure-mode-hook 'show-paren-mode)
+  (add-hook 'clojure-mode-hook 'showmatch-minor-mode))
 
 (use-package inf-clojure
   :ensure t
   :if (executable-find "lein")
   :config
-  (setq inf-clojure-prompt-read-only nil)
+  (setq inf-clojure-prompt-read-only t)
   (add-hook 'clojure-mode-hook 'eldoc-mode)
   (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
   (add-hook 'inf-clojure-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
-
-(use-package clj-refactor
-  :ensure t
-  :config
-  (cljr-add-keybindings-with-prefix "C-c C-m")
-  (add-hook 'clojure-mode-hook 'clj-refactor-mode))
-
-(use-package cider
-  :disabled t
-  :ensure t
-  :if (executable-find "lein")
-  :config
-  (setq nrepl-hide-special-buffers t)
-  (setq nrepl-buffer-name-show-port t)
-  (setq cider-repl-pop-to-buffer-on-connect t)
-  (setq cider-repl-display-help-banner nil)
-  (setq cider-repl-use-pretty-printing t)
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (add-hook 'cider-mode-hook 'company-mode)
-  (define-key cider-mode-map (kbd "C-c C-b") 'cider-interrupt)
-  (define-key cider-repl-mode-map (kbd "C-c C-b") 'cider-interrupt))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
