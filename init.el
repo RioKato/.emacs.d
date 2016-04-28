@@ -261,21 +261,21 @@
   (insert ")")
   (save-excursion
     (backward-sexp)
-    (sit-for 0.5)))
+    (sit-for 0.3)))
 
 (defun showmatch-close-bracket ()
   (interactive)
   (insert "]")
   (save-excursion
     (backward-sexp)
-    (sit-for 0.5)))
+    (sit-for 0.3)))
 
 (defun showmatch-close-brace ()
   (interactive)
   (insert "}")
   (save-excursion
     (backward-sexp)
-    (sit-for 0.5)))
+    (sit-for 0.3)))
 
 (define-minor-mode showmatch-minor-mode
   "vimlike showmatch"
