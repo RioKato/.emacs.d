@@ -51,12 +51,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-(define-key global-map [?¥] [?\\])
 (global-set-key (kbd "C-x C-b") 'bs-show)
-(when (fboundp 'winner-mode)
-  (winner-mode t)
-  (global-set-key (kbd "C-x 4") 'winner-undo)
-  (global-set-key (kbd "C-x 5") 'winner-redo))
 (when window-system
   (global-set-key (kbd "<C-return>") 'toggle-frame-maximized))
 
@@ -175,6 +170,7 @@
   :ensure t
   :config
   (sr-speedbar-close)
+  (setq sr-speedbar-delete-windows t)
   (setq speedbar-use-images nil)
   (setq sr-speedbar-width 25)
   (setq sr-speedbar-max-width 25)
@@ -265,21 +261,21 @@
   (insert ")")
   (save-excursion
     (backward-sexp)
-    (sit-for 1)))
+    (sit-for 0.5)))
 
 (defun showmatch-close-bracket ()
   (interactive)
   (insert "]")
   (save-excursion
     (backward-sexp)
-    (sit-for 1)))
+    (sit-for 0.5)))
 
 (defun showmatch-close-brace ()
   (interactive)
   (insert "}")
   (save-excursion
     (backward-sexp)
-    (sit-for 1)))
+    (sit-for 0.5)))
 
 (define-minor-mode showmatch-minor-mode
   "vimlike showmatch"
