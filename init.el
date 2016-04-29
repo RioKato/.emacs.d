@@ -160,12 +160,6 @@
   :config
   (powerline-default-theme))
 
-(use-package neotree
-  :disabled t
-  :ensure t
-  :config
-  (setq neo-smart-open t))
-
 (use-package sr-speedbar
   :ensure t
   :config
@@ -256,6 +250,14 @@
 ;; Config.Packages.Programming.Lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package eldoc
+  :config
+  (setq eldoc-documentation-function
+        (lambda ()
+          (when (eql last-command-event 32)
+            (let (eldoc-documentation-function)
+              (eldoc-print-current-symbol-info))))))
+
 (defun showmatch-close-paren ()
   (interactive)
   (insert ")")
@@ -339,10 +341,10 @@
   :if (executable-find "lein")
   :config
   (setq inf-clojure-prompt-read-only t)
-  (add-hook 'clojure-mode-hook 'eldoc-mode)
-  (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
   (add-hook 'inf-clojure-mode-hook 'company-mode)
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
+  (add-hook 'clojure-mode-hook 'eldoc-mode)
+  (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
