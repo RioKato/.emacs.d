@@ -347,6 +347,11 @@
   (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 
+(use-package javadoc-lookup
+  :ensure t
+  :config
+  (define-key clojure-mode-map (kbd "C-c j") 'javadoc-lookup))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
