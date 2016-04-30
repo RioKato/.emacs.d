@@ -370,7 +370,6 @@
   (define-key clojure-mode-map (kbd "C-c C-c") 'clojure-align)
   (defun inf-clojure-eval-defun-and-align ()
     (interactive)
-    (lisp-align-defun)
     (clojure-align-defun)
     (inf-clojure-eval-defun nil))
   (define-key inf-clojure-minor-mode-map (kbd "C-c C-c") 'inf-clojure-eval-defun-and-align)
