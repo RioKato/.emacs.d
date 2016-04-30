@@ -263,7 +263,8 @@
             (let (eldoc-documentation-function)
               (eldoc-print-current-symbol-info))))))
 
-(defgroup showmatch nil "vimlike showmatch")
+(defgroup showmatch nil "vimlike showmatch"
+  :group 'emacs)
 
 (defcustom showmatch-idle-delay 0.4
   "showmatch idele delay time"
