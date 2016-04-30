@@ -324,13 +324,6 @@
   :config
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-repl slime-banner slime-fancy slime-company))
-  (define-key slime-mode-map (kbd "C-c C-l")
-    (lambda ()
-      (interactive)
-      (call-interactively 'save-buffer)
-      (call-interactively 'slime-load-file)))
-  (define-key slime-repl-mode-map (kbd "C-c C-r") 'slime-restart-inferior-lisp)
-  (define-key slime-repl-mode-map (kbd "C-c C-q") 'slime-repl-quit)
   (add-hook 'lisp-mode-hook 'slime-mode)
   :mode
   (("\\.lisp$" . lisp-mode)))
@@ -390,9 +383,4 @@
 (use-package python
   :if (executable-find "python")
   :config
-  (setq python-indent-guess-indent-offset nil)
-  (define-key python-mode-map (kbd "C-c C-l")
-    (lambda ()
-      (interactive)
-      (call-interactively 'save-buffer)
-      (call-interactively 'python-shell-send-file))))
+  (setq python-indent-guess-indent-offset nil))
