@@ -45,6 +45,11 @@
 (setq-default truncate-partial-width-windows t)
 (global-linum-mode t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(defun align-all ()
+  (interactive)
+  (save-excursion
+    (indent-region (point-min) (point-max))))
+(add-hook 'before-save-hook 'align-all)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Keymap
@@ -284,7 +289,7 @@
     (define-key-showmatch map "}")
     (identity map)))
 
-(defun lisp-region-defun ()
+(defun lisp-align-defun ()
   (interactive)
   (save-excursion
     (end-of-defun)
@@ -336,6 +341,20 @@
 (use-package clojure-mode
   :ensure t
   :config
+  (defun clojure-align-defun ()
+    (interactive)
+    (lisp-align-defun)
+    (save-excursion
+      (end-of-defun)
+      (let ((end (point)) (case-fold-search t))
+        (beginning-of-defun)
+        (clojure-align (point) end))))
+  (defun clojure-align-all ()
+    (interactive)
+    (align-all)
+    (save-excursion
+      (clojure-align (point-min) (point-max))))
+  (add-hook 'before-save-hook 'clojure-align-all)
   (add-hook 'clojure-mode-hook 'show-paren-mode)
   (add-hook 'clojure-mode-hook 'showmatch-minor-mode))
 
@@ -351,8 +370,8 @@
   (define-key clojure-mode-map (kbd "C-c C-c") 'clojure-align)
   (defun inf-clojure-eval-defun-and-align ()
     (interactive)
-    (lisp-region-defun)
-    (call-interactively 'clojure-align)
+    (lisp-align-defun)
+    (clojure-align-defun)
     (inf-clojure-eval-defun nil))
   (define-key inf-clojure-minor-mode-map (kbd "C-c C-c") 'inf-clojure-eval-defun-and-align)
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
