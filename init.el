@@ -354,7 +354,7 @@
     (align-all)
     (save-excursion
       (clojure-align (point-min) (point-max))))
-  (add-hook 'before-save-hook 'clojure-align-all)
+  (add-hook 'before-save-hook 'clojure-align-all nil t)
   (add-hook 'clojure-mode-hook 'show-paren-mode)
   (add-hook 'clojure-mode-hook 'showmatch-minor-mode))
 
