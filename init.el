@@ -304,6 +304,9 @@
 
 (use-package lisp-mode
   :config
+  (add-hook 'lisp-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook 'lisp-align-all nil t)))
   (add-hook 'lisp-mode-hook 'show-paren-mode)
   (add-hook 'lisp-mode-hook 'showmatch-minor-mode))
 
