@@ -258,35 +258,32 @@
             (let (eldoc-documentation-function)
               (eldoc-print-current-symbol-info))))))
 
-(defun showmatch-close-paren ()
-  (interactive)
-  (insert ")")
-  (save-excursion
-    (backward-sexp)
-    (sit-for 0.3)))
-
-(defun showmatch-close-bracket ()
-  (interactive)
-  (insert "]")
-  (save-excursion
-    (backward-sexp)
-    (sit-for 0.3)))
-
-(defun showmatch-close-brace ()
-  (interactive)
-  (insert "}")
-  (save-excursion
-    (backward-sexp)
-    (sit-for 0.3)))
-
 (define-minor-mode showmatch-minor-mode
   "vimlike showmatch"
   :lighter "showmatch"
   :keymap
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd ")") 'showmatch-close-paren)
-    (define-key map (kbd "]") 'showmatch-close-bracket)
-    (define-key map (kbd "}") 'showmatch-close-brace)
+    (define-key map (kbd ")")
+      (lambda ()
+        (interactive)
+        (insert ")")
+        (save-excursion
+          (backward-sexp)
+          (sit-for 0.3))))
+    (define-key map (kbd "]")
+      (lambda ()
+        (interactive)
+        (insert "]")
+        (save-excursion
+          (backward-sexp)
+          (sit-for 0.3))))
+    (define-key map (kbd "}")
+      (lambda ()
+        (interactive)
+        (insert "}")
+        (save-excursion
+          (backward-sexp)
+          (sit-for 0.3))))
     (identity map)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
