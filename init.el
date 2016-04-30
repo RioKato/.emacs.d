@@ -258,33 +258,39 @@
             (let (eldoc-documentation-function)
               (eldoc-print-current-symbol-info))))))
 
+(defgroup showmatch nil "vimlike showmatch")
+
+(defcustom showmatch-idle-delay 0.4
+  "showmatch idele delay time"
+  :type 'number
+  :group 'showmatch)
+
+(defmacro define-key-showmatch (map chr)
+  `(define-key ,map (kbd ,chr)
+     (lambda ()
+       (interactive)
+       (insert ,chr)
+       (save-excursion
+         (backward-sexp)
+         (sit-for showmatch-idle-delay)))))
+
 (define-minor-mode showmatch-minor-mode
   "vimlike showmatch"
   :lighter "showmatch"
   :keymap
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd ")")
-      (lambda ()
-        (interactive)
-        (insert ")")
-        (save-excursion
-          (backward-sexp)
-          (sit-for 0.3))))
-    (define-key map (kbd "]")
-      (lambda ()
-        (interactive)
-        (insert "]")
-        (save-excursion
-          (backward-sexp)
-          (sit-for 0.3))))
-    (define-key map (kbd "}")
-      (lambda ()
-        (interactive)
-        (insert "}")
-        (save-excursion
-          (backward-sexp)
-          (sit-for 0.3))))
+    (define-key-showmatch map ")")
+    (define-key-showmatch map "]")
+    (define-key-showmatch map "}")
     (identity map)))
+
+(defun lisp-region-defun ()
+  (interactive)
+  (save-excursion
+    (end-of-defun)
+    (let ((end (point)) (case-fold-search t))
+      (beginning-of-defun)
+      (indent-region (point) end))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.CL
@@ -342,6 +348,13 @@
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'eldoc-mode)
   (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
+  (define-key clojure-mode-map (kbd "C-c C-c") 'clojure-align)
+  (defun inf-clojure-eval-defun-and-align ()
+    (interactive)
+    (lisp-region-defun)
+    (call-interactively 'clojure-align)
+    (inf-clojure-eval-defun nil))
+  (define-key inf-clojure-minor-mode-map (kbd "C-c C-c") 'inf-clojure-eval-defun-and-align)
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 
 (use-package javadoc-lookup
