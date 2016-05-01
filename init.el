@@ -327,6 +327,11 @@
   :config
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-repl slime-banner slime-fancy slime-company))
+  (define-key slime-mode-map (kbd "C-c C-c")
+    (lambda ()
+      (interactive)
+      (lisp-align-defun)
+      (slime-compile-defun)))
   (add-hook 'lisp-mode-hook 'slime-mode)
   :mode
   (("\\.lisp$" . lisp-mode)))
