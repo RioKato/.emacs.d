@@ -82,7 +82,7 @@
   (setq line-spacing 2)
   (setq mac-allow-anti-aliasing t)
   (set-face-attribute 'default nil
-                      :family "Courier New"
+                      :family "Annonymous Pro"
                       :height 150))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
