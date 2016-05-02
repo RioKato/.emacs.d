@@ -284,18 +284,21 @@
     (define-key-showmatch map "}")
     (identity map)))
 
-(defun lisp-align-all ()
-  (interactive)
-  (save-excursion
-    (indent-region (point-min) (point-max))))
+(defmacro defalign (name fun range)
+  `(defun ,name ()
+     (interactive)
+     ,(cond  ((eq :all range)
+              `(save-excursion
+                 (,fun (point-min) (point-max))))
+             ((eq :defun range)
+              `(save-excursion
+                 (end-of-defun)
+                 (let ((end (point)) (case-fold-search t))
+                   (beginning-of-defun)
+                   (,fun (point) end)))))))
 
-(defun lisp-align-defun ()
-  (interactive)
-  (save-excursion
-    (end-of-defun)
-    (let ((end (point)) (case-fold-search t))
-      (beginning-of-defun)
-      (indent-region (point) end))))
+(defalign lisp-align-all indent-region :all)
+(defalign lisp-align-defun indent-region :defun)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.CL
@@ -342,22 +345,15 @@
 (use-package clojure-mode
   :ensure t
   :config
-  (defun clojure-align-all ()
-    (interactive)
-    (lisp-align-all)
-    (save-excursion
-      (clojure-align (point-min) (point-max))))
-  (defun clojure-align-defun ()
-    (interactive)
-    (lisp-align-defun)
-    (save-excursion
-      (end-of-defun)
-      (let ((end (point)) (case-fold-search t))
-        (beginning-of-defun)
-        (clojure-align (point) end))))
+  (defalign clojure-align-all clojure-align :all)
+  (defalign clojure-align-defun clojure-align :defun)
   (add-hook 'clojure-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook 'clojure-align-all nil t)))
+              (add-hook 'before-save-hook
+                        (lambda ()
+                          (lisp-align-all)
+                          (clojure-align-all))
+                        nil t)))
   (add-hook 'clojure-mode-hook 'show-paren-mode)
   (add-hook 'clojure-mode-hook 'showmatch-minor-mode))
 
@@ -370,12 +366,6 @@
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'eldoc-mode)
   (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
-  (define-key clojure-mode-map (kbd "C-c C-c") 'clojure-align)
-  (defun inf-clojure-eval-defun-and-align ()
-    (interactive)
-    (clojure-align-defun)
-    (inf-clojure-eval-defun nil))
-  (define-key inf-clojure-minor-mode-map (kbd "C-c C-c") 'inf-clojure-eval-defun-and-align)
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 
 (use-package javadoc-lookup
