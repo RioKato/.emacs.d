@@ -272,7 +272,8 @@
        (interactive)
        (insert ,chr)
        (save-excursion
-         (backward-sexp)
+         (ignore-errors
+           (backward-sexp))
          (sit-for showmatch-idle-delay)))))
 
 (define-minor-mode showmatch-minor-mode
@@ -284,6 +285,20 @@
     (define-key-showmatch map "]")
     (define-key-showmatch map "}")
     (identity map)))
+
+(defun show-tail-of-buffer (name &optional n)
+  (interactive "b\nn")
+  (setq n (or n 1))
+  (let ((buffer (get-buffer name)))
+    (when buffer
+      (with-current-buffer buffer
+        (save-excursion
+          (end-of-buffer)
+          (dotimes (i n)
+            (ignore-errors
+              (previous-line)))
+          (beginning-of-line)
+          (message (buffer-substring-no-properties (point) (point-max))))))))
 
 (defmacro defalign (name fun range)
   `(defun ,name ()
@@ -380,5 +395,4 @@
   :if (executable-find "python")
   :config
   (setq python-indent-guess-indent-offset nil))
-
 
