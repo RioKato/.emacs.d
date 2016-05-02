@@ -79,10 +79,9 @@
   (setenv "LANG" "ja_JP.UTF-8")
   (setenv "PATH" "/bin:/usr/bin:/usr/local/bin")
   (setq exec-path '("/bin" "/usr/bin" "/usr/local/bin"))
-  (setq line-spacing 2)
   (setq mac-allow-anti-aliasing t)
   (set-face-attribute 'default nil
-                      :family "Annonymous Pro"
+                      :family "Anonymous Pro"
                       :height 150))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
