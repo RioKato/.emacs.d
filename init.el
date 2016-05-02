@@ -44,6 +44,7 @@
 (setq-default truncate-lines t)
 (setq-default truncate-partial-width-windows t)
 (global-linum-mode t)
+(setq delete-trailing-lines nil)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -381,3 +382,5 @@
   :if (executable-find "python")
   :config
   (setq python-indent-guess-indent-offset nil))
+
+
