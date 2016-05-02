@@ -335,9 +335,7 @@
       (interactive)
       (lisp-align-defun)
       (slime-compile-defun)))
-  (add-hook 'lisp-mode-hook 'slime-mode)
-  :mode
-  (("\\.lisp$" . lisp-mode)))
+  (add-hook 'lisp-mode-hook 'slime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.Clojure
