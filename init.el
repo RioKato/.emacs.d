@@ -14,6 +14,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
+(when (fboundp 'winner-mode)
+  (winner-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.System.MAC
@@ -53,9 +55,6 @@
 
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 (global-set-key (kbd "C-x C-b") 'bs-show)
-(when (fboundp 'winner-mode)
-  (winner-mode t)
-  (global-set-key (kbd "C-c u") 'winner-undo))
 (when window-system
   (global-set-key (kbd "<C-return>") 'toggle-frame-maximized))
 
@@ -198,6 +197,12 @@
   :ensure t
   :config
   (global-undo-tree-mode t)
+  (when (fboundp 'winner-mode)
+    (define-key undo-tree-visualizer-mode-map (kbd "q")
+      (lambda ()
+        (interactive)
+        (undo-tree-visualizer-quit)
+        (winner-undo))))
   (global-set-key (kbd "M-/") 'undo-tree-redo))
 
 (use-package undohist
