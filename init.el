@@ -197,7 +197,7 @@
   :ensure t
   :config
   (global-undo-tree-mode t)
-  (when (fboundp 'winner-mode)
+  (when (fboundp 'winner-undo)
     (define-key undo-tree-visualizer-mode-map (kbd "q")
       (lambda ()
         (interactive)
