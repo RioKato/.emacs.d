@@ -202,7 +202,8 @@
       (lambda ()
         (interactive)
         (undo-tree-visualizer-quit)
-        (winner-undo)))))
+        (unless (one-window-p)
+          (winner-undo))))))
 
 (use-package undohist
   :ensure t
