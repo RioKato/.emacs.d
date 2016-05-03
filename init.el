@@ -287,16 +287,15 @@
     (define-key-showmatch map "}")
     (identity map)))
 
-(defun show-tail-of-buffer (name &optional n)
-  (interactive "b\nn")
-  (setq n (abs (or n 1)))
+(defun show-buffer-backward-search (name regexp &optional repeat)
+  (interactive "b\ns\np")
   (let ((buffer (get-buffer name)))
     (when buffer
       (with-current-buffer buffer
         (save-excursion
           (goto-char (point-max))
-          (forward-line (- n))
-          (beginning-of-line)
+          (when (re-search-backward regexp nil t repeat)
+            (beginning-of-line))
           (message (buffer-substring-no-properties (point) (point-max))))))))
 
 (defun align-range (range-type f)
@@ -368,7 +367,7 @@
   (define-key clojure-mode-map (kbd "C-c C-d")
     (lambda ()
       (interactive)
-      (show-tail-of-buffer "*inf-clojure*" 5)))
+      (show-buffer-backward-search "*inf-clojure*" "=>" 2)))
   (setq inf-clojure-prompt-read-only t)
   (add-hook 'inf-clojure-mode-hook 'company-mode)
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
