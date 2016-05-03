@@ -375,6 +375,10 @@
   :ensure t
   :if (executable-find "lein")
   :config
+  (define-key clojure-mode-map (kbd "C-c C-d")
+    (lambda ()
+      (interactive)
+      (show-tail-of-buffer "*inf-clojure*" 5)))
   (setq inf-clojure-prompt-read-only t)
   (add-hook 'inf-clojure-mode-hook 'company-mode)
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
