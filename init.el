@@ -368,7 +368,7 @@
   (define-key clojure-mode-map (kbd "C-c C-d")
     (lambda ()
       (interactive)
-      (show-buffer-backward-search "*inf-clojure*" "=>" 2)))
+      (show-buffer-backward-search "*inf-clojure*" "^[a-zA-Z0-9\.-_]*=>" 2)))
   (setq inf-clojure-prompt-read-only t)
   (add-hook 'inf-clojure-mode-hook 'company-mode)
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
