@@ -300,18 +300,16 @@
           (beginning-of-line)
           (message (buffer-substring-no-properties (point) (point-max))))))))
 
-(defmacro defalign (name fun range)
-  `(defun ,name ()
-     (interactive)
-     ,(cond  ((eq :all range)
-              `(save-excursion
-                 (,fun (point-min) (point-max))))
-             ((eq :defun range)
-              `(save-excursion
-                 (end-of-defun)
-                 (let ((end (point)) (case-fold-search t))
-                   (beginning-of-defun)
-                   (,fun (point) end)))))))
+(defun align-range (range-type f)
+  (cond ((eq :all range-type)
+         (save-excursion
+           (funcall f (point-min) (point-max))))
+        ((eq :defun range-type)
+         (save-excursion
+           (end-of-defun)
+           (let ((end (point)) (case-fold-search t))
+             (beginning-of-defun)
+             (funcall f (point) end))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.CL
@@ -319,10 +317,12 @@
 
 (use-package lisp-mode
   :config
-  (defalign lisp-align-all indent-region :all)
   (add-hook 'lisp-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook 'lisp-align-all nil t)))
+              (add-hook 'before-save-hook
+                        (lambda ()
+                          (align-range :all 'indent-region))
+                        nil t)))
   (add-hook 'lisp-mode-hook 'show-paren-mode)
   (add-hook 'lisp-mode-hook 'showmatch-minor-mode))
 
@@ -343,11 +343,6 @@
   :config
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-repl slime-banner slime-fancy slime-company))
-  (define-key slime-mode-map (kbd "C-c C-c")
-    (lambda ()
-      (interactive)
-      (lisp-align-defun)
-      (slime-compile-defun)))
   (add-hook 'lisp-mode-hook 'slime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -357,15 +352,13 @@
 (use-package clojure-mode
   :ensure t
   :config
-  (defalign clojure-align-all
-    (lambda (start end)
-      (interactive "r")
-      (indent-region start end)
-      (clojure-align start end))
-    :all)
   (add-hook 'clojure-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook 'clojure-align-all nil t)))
+              (add-hook 'before-save-hook
+                        (lambda ()
+                          (align-range :all 'indent-region)
+                          (align-range :all 'clojure-align))
+                        nil t)))
   (add-hook 'clojure-mode-hook 'show-paren-mode)
   (add-hook 'clojure-mode-hook 'showmatch-minor-mode))
 
