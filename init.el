@@ -196,14 +196,7 @@
 (use-package undo-tree
   :ensure t
   :config
-  (global-undo-tree-mode t)
-  (when (fboundp 'winner-undo)
-    (define-key undo-tree-visualizer-mode-map (kbd "q")
-      (lambda ()
-        (interactive)
-        (undo-tree-visualizer-quit)
-        (unless (one-window-p)
-          (winner-undo))))))
+  (global-undo-tree-mode t))
 
 (use-package undohist
   :ensure t
