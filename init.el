@@ -61,6 +61,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (eq system-type 'darwin)
+  (define-key global-map [165] [92])
   (setq mac-command-modifier 'meta))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
