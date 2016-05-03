@@ -313,15 +313,13 @@
                    (beginning-of-defun)
                    (,fun (point) end)))))))
 
-(defalign lisp-align-all indent-region :all)
-(defalign lisp-align-defun indent-region :defun)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.CL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package lisp-mode
   :config
+  (defalign lisp-align-all indent-region :all)
   (add-hook 'lisp-mode-hook
             (lambda ()
               (add-hook 'before-save-hook 'lisp-align-all nil t)))
@@ -359,15 +357,15 @@
 (use-package clojure-mode
   :ensure t
   :config
-  (defalign clojure-align-all clojure-align :all)
-  (defalign clojure-align-defun clojure-align :defun)
+  (defalign clojure-align-all
+    (lambda (start end)
+      (interactive "r")
+      (indent-region start end)
+      (clojure-align start end))
+    :all)
   (add-hook 'clojure-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook
-                        (lambda ()
-                          (lisp-align-all)
-                          (clojure-align-all))
-                        nil t)))
+              (add-hook 'before-save-hook 'clojure-align-all nil t)))
   (add-hook 'clojure-mode-hook 'show-paren-mode)
   (add-hook 'clojure-mode-hook 'showmatch-minor-mode))
 
