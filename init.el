@@ -288,15 +288,13 @@
 
 (defun show-tail-of-buffer (name &optional n)
   (interactive "b\nn")
-  (setq n (or n 1))
+  (setq n (abs (or n 1)))
   (let ((buffer (get-buffer name)))
     (when buffer
       (with-current-buffer buffer
         (save-excursion
-          (end-of-buffer)
-          (dotimes (i n)
-            (ignore-errors
-              (previous-line)))
+          (goto-char (point-max))
+          (forward-line (- n))
           (beginning-of-line)
           (message (buffer-substring-no-properties (point) (point-max))))))))
 
