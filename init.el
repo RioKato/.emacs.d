@@ -202,8 +202,7 @@
       (lambda ()
         (interactive)
         (undo-tree-visualizer-quit)
-        (winner-undo))))
-  (global-set-key (kbd "M-/") 'undo-tree-redo))
+        (winner-undo)))))
 
 (use-package undohist
   :ensure t
