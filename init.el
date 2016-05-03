@@ -53,6 +53,9 @@
 
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 (global-set-key (kbd "C-x C-b") 'bs-show)
+(when (fboundp 'winner-mode)
+  (winner-mode t)
+  (global-set-key (kbd "C-c u") 'winner-undo))
 (when window-system
   (global-set-key (kbd "<C-return>") 'toggle-frame-maximized))
 
