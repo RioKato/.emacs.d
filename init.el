@@ -164,7 +164,6 @@
 (use-package sr-speedbar
   :ensure t
   :config
-  (sr-speedbar-close)
   (setq sr-speedbar-delete-windows t)
   (setq speedbar-use-images nil)
   (setq sr-speedbar-width 25)
