@@ -197,31 +197,32 @@
   (global-undo-tree-mode t)
 
   (when (package-installed-p 'cl)
-    (defun undo-tree-recover-window-init ()
-      (defvar undo-tree-recover-window nil)
-      (put 'undo-tree-recover-window (lambda () nil) t)
-      (make-variable-buffer-local 'undo-tree-recover-window))
+    (with-no-warnings
+      (defun undo-tree-recover-window-init ()
+        (defvar undo-tree-recover-window nil)
+        (put 'undo-tree-recover-window (lambda () nil) t)
+        (make-variable-buffer-local 'undo-tree-recover-window))
 
-    (lexical-let ((undo-tree-visualize.old (symbol-function 'undo-tree-visualize)))
-      (defun undo-tree-visualize ()
-        (interactive)
-        (let ((window-openp (= 1 (count-if-not 'window-dedicated-p (window-list)))))
-          (funcall undo-tree-visualize.old)
-          (setq undo-tree-recover-window
-                (if window-openp
-                    (lexical-let ((current-window (get-buffer-window)))
-                      (lambda ()
-                        (delete-window current-window)))
-                  (lambda () nil))))))
+      (lexical-let ((undo-tree-visualize.old (symbol-function 'undo-tree-visualize)))
+        (defun undo-tree-visualize ()
+          (interactive)
+          (let ((window-openp (= 1 (count-if-not 'window-dedicated-p (window-list)))))
+            (funcall undo-tree-visualize.old)
+            (setq undo-tree-recover-window
+                  (if window-openp
+                      (lexical-let ((current-window (get-buffer-window)))
+                        (lambda ()
+                          (delete-window current-window)))
+                    (lambda () nil))))))
 
-    (lexical-let ((undo-tree-visualizer-quit.old (symbol-function 'undo-tree-visualizer-quit)))
-      (defun undo-tree-visualizer-quit ()
-        (interactive)
-        (let ((temp undo-tree-recover-window))
-          (funcall undo-tree-visualizer-quit.old)
-          (funcall temp))))
+      (lexical-let ((undo-tree-visualizer-quit.old (symbol-function 'undo-tree-visualizer-quit)))
+        (defun undo-tree-visualizer-quit ()
+          (interactive)
+          (let ((temp undo-tree-recover-window))
+            (funcall undo-tree-visualizer-quit.old)
+            (funcall temp))))
 
-    (add-hook 'undo-tree-visualizer-mode-hook 'undo-tree-recover-window-init)))
+      (add-hook 'undo-tree-visualizer-mode-hook 'undo-tree-recover-window-init))))
 
 (use-package undohist
   :ensure t
