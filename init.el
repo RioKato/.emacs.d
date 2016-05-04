@@ -14,8 +14,6 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
-(when (fboundp 'winner-mode)
-  (winner-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.System.MAC
@@ -196,7 +194,23 @@
 (use-package undo-tree
   :ensure t
   :config
-  (global-undo-tree-mode t))
+  (global-undo-tree-mode t)
+  (add-hook 'undo-tree-visualizer-mode-hook
+            (lambda ()
+              (defvar undo-tree-delete-windowp nil)
+              (make-variable-buffer-local 'undo-tree-delete-windowp)))
+  (define-key undo-tree-map (kbd "C-x u")
+    (lambda ()
+      (interactive)
+      (setq undo-tree-delete-windowp
+            (= 1 (count-if-not 'window-dedicated-p (window-list))))
+      (undo-tree-visualize)))
+  (define-key undo-tree-visualizer-mode-map (kbd "q")
+    (lambda ()
+      (interactive)
+      (undo-tree-visualizer-quit)
+      (if undo-tree-delete-windowp
+          (delete-window)))))
 
 (use-package undohist
   :ensure t
