@@ -14,6 +14,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
+(display-time)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.System.MAC
@@ -62,6 +63,7 @@
 
 (when (eq system-type 'darwin)
   (define-key global-map [165] [92])
+  (setq mac-option-modifier nil)
   (setq mac-command-modifier 'meta))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -148,6 +150,18 @@
   (setq switch-window-shortcut-style 'qwerty)
   :bind
   (("C-x o" . switch-window)))
+
+(use-package migemo
+  :ensure t
+  :if (executable-find "cmigemo")
+  :config
+  (setq migemo-command "cmigemo")
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (migemo-init))
 
 (use-package smooth-scroll
   :ensure t
