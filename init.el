@@ -54,17 +54,14 @@
 
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 (global-set-key (kbd "C-x C-b") 'bs-show)
-(when window-system
-  (global-set-key (kbd "<C-return>") 'toggle-frame-maximized))
+(global-set-key (kbd "C-t") 'repeat)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Keymap.MAC
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (eq system-type 'darwin)
-  (define-key global-map [165] [92])
-  (setq mac-option-modifier nil)
-  (setq mac-command-modifier 'meta))
+  (define-key key-translation-map [165] [92]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.GUI
