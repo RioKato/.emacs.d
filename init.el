@@ -334,7 +334,7 @@
           (if (re-search-backward regexp nil t repeat)
               (beginning-of-line)
             (goto-char (point-min)))
-          (message (buffer-substring-no-properties (point) (point-max))))))))
+          (message "%s" (buffer-substring-no-properties (point) (point-max))))))))
 
 (defun align-range (range-type f)
   (cond ((eq :all range-type)
