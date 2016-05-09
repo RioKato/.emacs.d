@@ -98,7 +98,21 @@
 ;; Config.Network.SB
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(unless (member (system-name) '("rio.local"))
+(defun get-network-address (interface-name)
+  (let ((interface (network-interface-info interface-name)))
+    (when interface
+      (let ((ip (nth 0 interface))
+            (mask (nth 2 interface))
+            (result nil))
+        (format-network-address
+         (apply 'vector
+                (reverse
+                 (dotimes (i 4 result)
+                   (push (logand (aref ip i)
+                                 (aref mask i))
+                         result)))))))))
+
+(unless (member (get-network-address "en0") '("rio.local"))
   (setq url-proxy-services
         '(("http" . "10.221.237.10:8080")
           ("https" . "10.221.237.10:8080"))))
