@@ -112,7 +112,7 @@
                                  (aref mask i))
                          result)))))))))
 
-(unless (member (get-network-address "en0") '("rio.local"))
+(when (member (get-network-address "en0") '("rio.local"))
   (setq url-proxy-services
         '(("http" . "10.221.237.10:8080")
           ("https" . "10.221.237.10:8080"))))
