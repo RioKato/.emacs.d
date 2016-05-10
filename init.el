@@ -302,7 +302,7 @@
   (setq eww-search-prefix "https://www.google.co.jp/search?q="))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.Lisp
+;; Config.Packages.Programming
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package eldoc
@@ -312,6 +312,13 @@
           (when (eql last-command-event 32)
             (let (eldoc-documentation-function)
               (eldoc-print-current-symbol-info))))))
+
+(use-package yasnippet
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Lisp
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defgroup showmatch nil "vimlike showmatch"
   :group 'emacs)
