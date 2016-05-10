@@ -112,10 +112,13 @@
                                  (aref mask i))
                          result)))))))))
 
-(when (member (get-network-address "en0") '("rio.local"))
-  (setq url-proxy-services
-        '(("http" . "10.221.237.10:8080")
-          ("https" . "10.221.237.10:8080"))))
+(let ((address (or (get-network-address "en0")
+                   (get-network-address "eth0"))))
+  (when (and address
+             (member address '("rio.local")))
+    (setq url-proxy-services
+          '(("http" . "10.221.237.10:8080")
+            ("https" . "10.221.237.10:8080")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Initialize
