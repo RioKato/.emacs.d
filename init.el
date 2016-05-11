@@ -104,13 +104,14 @@
       (let ((ip (nth 0 interface))
             (mask (nth 2 interface))
             (result nil))
-        (format-network-address
-         (apply 'vector
-                (reverse
-                 (dotimes (i 4 result)
-                   (push (logand (aref ip i)
-                                 (aref mask i))
-                         result)))))))))
+        (when (or ip mask)
+          (format-network-address
+           (apply 'vector
+                  (reverse
+                   (dotimes (i 4 result)
+                     (push (logand (aref ip i)
+                                   (aref mask i))
+                           result))))))))))
 
 (let ((address (or (get-network-address "en0")
                    (get-network-address "eth0"))))
