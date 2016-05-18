@@ -449,7 +449,7 @@
 (when (and window-system (eq 'darwin system-type))
   (setenv "SCALA_HOME" "/usr/local/java/scala-2.11.8/bin/")
   (setenv "SBT_HOME" "/usr/local/java/sbt/bin/")
-  (setenv "PATH" (format "%s:%s"
+  (setenv "PATH" (format "%s:%s:%s"
                          (getenv "PATH")
                          (getenv "SCALA_HOME")
                          (getenv "SBT_HOME")))
