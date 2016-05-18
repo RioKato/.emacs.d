@@ -314,9 +314,6 @@
             (let (eldoc-documentation-function)
               (eldoc-print-current-symbol-info))))))
 
-(use-package yasnippet
-  :ensure t)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -442,6 +439,40 @@
   :ensure t
   :config
   (define-key clojure-mode-map (kbd "C-c j") 'javadoc-lookup))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Scala
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(when (and window-system (eq 'darwin system-type))
+  (setenv "SCALA_HOME" "/usr/local/java/scala-2.11.8/bin/")
+  (setenv "PATH" (format "%s:%s"
+                         (getenv "PATH")
+                         (getenv "SCALA_HOME")))
+  (add-to-list 'exec-path
+               (list (getenv "SCALA_HOME"))))
+
+(use-package scala-mode2
+  :ensure t
+  :if (executable-find "scala"))
+
+(when (and window-system (eq 'darwin system-type))
+  (setenv "PATH" (format "%s:%s"
+                         (getenv "PATH")
+                         "/usr/local/java/sbt/bin"))
+  (add-to-list 'exec-path
+               (list "/usr/local/java/sbt/bin")))
+
+(use-package ensime
+  :ensure t
+  :if (and (executable-find "scala")
+           (executable-find "sbt"))
+  :config
+  (when (executable-find "sh")
+    (shell-command "mkdir -p ~/.sbt/0.13/plugins")
+    (shell-command "echo \"addSbtPlugin(\\\"org.ensime\\\" % \\\"sbt-ensime\\\" % \\\"0.5.1\\\")\" > ~/.sbt/0.13/plugins/plugins.sbt"))
+  (define-key scala-mode-map (kbd ".") 'scala/completing-dot)
+  (add-hook 'scala-mode-hook 'ensime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
