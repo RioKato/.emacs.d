@@ -1,5 +1,4 @@
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.System
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -127,11 +126,11 @@
 
 (if (require 'package nil t)
     (progn (add-to-list 'package-archives
-                        '("melpa" . "http://melpa.org/packages/") t)
+                        '("melpa" . "https://melpa.org/packages/") t)
            (add-to-list 'package-archives
-                        '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+                        '("melpa-stable" . "https://stable.melpa.org/packages/") t)
            (add-to-list 'package-archives
-                        '("marmalade" . "http://marmalade-repo.org/packages/") t)
+                        '("marmalade" . "https://marmalade-repo.org/packages/") t)
            (package-initialize)
            (unless (package-installed-p 'use-package)
              (package-refresh-contents)
@@ -215,6 +214,9 @@
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 1)
   (setq company-selection-wrap-around t)
+  (setq company-dabbrev-ignore-case nil)
+  (setq company-dabbrev-code-ignore-case nil)
+  (setq company-dabbrev-downcase nil)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (global-set-key (kbd "C-i") 'company-indent-or-complete-common))
@@ -446,22 +448,18 @@
 
 (when (and window-system (eq 'darwin system-type))
   (setenv "SCALA_HOME" "/usr/local/java/scala-2.11.8/bin/")
+  (setenv "SBT_HOME" "/usr/local/java/sbt/bin/")
   (setenv "PATH" (format "%s:%s"
                          (getenv "PATH")
-                         (getenv "SCALA_HOME")))
+                         (getenv "SCALA_HOME")
+                         (getenv "SBT_HOME")))
   (add-to-list 'exec-path
-               (list (getenv "SCALA_HOME"))))
+               (list (getenv "SCALA_HOME")
+                     (getenv "SBT_HOME"))))
 
-(use-package scala-mode2
+(use-package scala-mode
   :ensure t
   :if (executable-find "scala"))
-
-(when (and window-system (eq 'darwin system-type))
-  (setenv "PATH" (format "%s:%s"
-                         (getenv "PATH")
-                         "/usr/local/java/sbt/bin"))
-  (add-to-list 'exec-path
-               (list "/usr/local/java/sbt/bin")))
 
 (use-package ensime
   :ensure t
@@ -469,9 +467,10 @@
            (executable-find "sbt"))
   :config
   (when (executable-find "sh")
-    (shell-command "mkdir -p ~/.sbt/0.13/plugins")
-    (shell-command "echo \"addSbtPlugin(\\\"org.ensime\\\" % \\\"sbt-ensime\\\" % \\\"0.5.1\\\")\" > ~/.sbt/0.13/plugins/plugins.sbt"))
-  (define-key scala-mode-map (kbd ".") 'scala/completing-dot)
+    (shell-command
+     "mkdir -p `dirname ~/.sbt/0.13/plugins/plugins.sbt`")
+    (shell-command
+     "echo \"addSbtPlugin(\\\"org.ensime\\\" % \\\"sbt-ensime\\\" % \\\"0.5.1\\\")\" > ~/.sbt/0.13/plugins/plugins.sbt"))
   (add-hook 'scala-mode-hook 'ensime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
