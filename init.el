@@ -447,15 +447,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (and window-system (eq 'darwin system-type))
-  (setenv "SCALA_HOME" "/usr/local/java/scala-2.11.8/bin/")
+  (setenv "SCALA_HOME" "/usr/local/java/scala/bin/")
   (setenv "SBT_HOME" "/usr/local/java/sbt/bin/")
   (setenv "PATH" (format "%s:%s:%s"
                          (getenv "PATH")
                          (getenv "SCALA_HOME")
                          (getenv "SBT_HOME")))
-  (add-to-list 'exec-path
-               (list (getenv "SCALA_HOME")
-                     (getenv "SBT_HOME"))))
+  (setq exec-path
+        (append exec-path
+                (list (getenv "SCALA_HOME")
+                      (getenv "SBT_HOME")))))
 
 (use-package scala-mode
   :ensure t
@@ -466,11 +467,33 @@
   :if (and (executable-find "scala")
            (executable-find "sbt"))
   :config
-  (when (executable-find "sh")
-    (shell-command
-     "mkdir -p `dirname ~/.sbt/0.13/plugins/plugins.sbt`")
-    (shell-command
-     "echo \"addSbtPlugin(\\\"org.ensime\\\" % \\\"sbt-ensime\\\" % \\\"0.5.1\\\")\" > ~/.sbt/0.13/plugins/plugins.sbt"))
+  (defun scala/completing-dot-company ()
+    (cond (company-backend
+           (company-complete-selection)
+           (scala/completing-dot))
+          (t
+           (insert ".")
+           (company-complete))))
+
+  (defun scala/completing-dot-ac ()
+    (insert ".")
+    (ac-trigger-key-command t))
+
+  (defun scala/completing-dot ()
+    (interactive "*")
+    (eval-and-compile (require 'ensime))
+    (eval-and-compile (require 's))
+    (when (s-matches? (rx (+ (not space)))
+                      (buffer-substring (line-beginning-position) (point)))
+      (delete-horizontal-space t))
+    (cond ((not (and (ensime-connected-p) ensime-completion-style))
+           (insert "."))
+          ((eq ensime-completion-style 'company)
+           (scala/completing-dot-company))
+          ((eq ensime-completion-style 'auto-complete)
+           (scala/completing-dot-ac))))
+
+  (define-key scala-mode-map (kbd ".") 'scala/completing-dot)
   (add-hook 'scala-mode-hook 'ensime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
