@@ -48,6 +48,30 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Environment
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setenv "PATH" "/bin:/usr/bin:/usr/local/bin")
+(setq exec-path '("/bin" "/usr/bin" "/usr/local/bin"))
+
+(setenv "SCALA_HOME" "/usr/local/java/scala/bin/")
+(setenv "SBT_HOME" "/usr/local/java/sbt/bin/")
+(setenv "PATH" (format "%s:%s:%s"
+                       (getenv "PATH")
+                       (getenv "SCALA_HOME")
+                       (getenv "SBT_HOME")))
+(setq exec-path
+      (append exec-path
+              (list (getenv "SCALA_HOME")
+                    (getenv "SBT_HOME"))))
+
+(setenv "R_HOME" "/Applications/R.app/Contents/MacOS")
+(setenv "PATH" (format "%s:%s"
+                       (getenv "PATH")
+                       (getenv "R_HOME")))
+(add-to-list 'exec-path (getenv "R_HOME"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Keymap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -77,8 +101,6 @@
 
 (when (and window-system (eq 'darwin system-type))
   (setenv "LANG" "ja_JP.UTF-8")
-  (setenv "PATH" "/bin:/usr/bin:/usr/local/bin")
-  (setq exec-path '("/bin" "/usr/bin" "/usr/local/bin"))
   (setq mac-allow-anti-aliasing t)
   (set-face-attribute 'default nil
                       :family "Anonymous Pro"
@@ -94,31 +116,13 @@
                       :height 100))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Network.SB
+;; Config.Network.Proxy
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun get-network-address (interface-name)
-  (let ((interface (network-interface-info interface-name)))
-    (when interface
-      (let ((ip (nth 0 interface))
-            (mask (nth 2 interface))
-            (result nil))
-        (when (or ip mask)
-          (format-network-address
-           (apply 'vector
-                  (reverse
-                   (dotimes (i 4 result)
-                     (push (logand (aref ip i)
-                                   (aref mask i))
-                           result))))))))))
-
-(let ((address (or (get-network-address "en0")
-                   (get-network-address "eth0"))))
-  (when (and address
-             (member address '("rio.local")))
-    (setq url-proxy-services
-          '(("http" . "10.221.237.10:8080")
-            ("https" . "10.221.237.10:8080")))))
+(when (member (system-name) '())
+  (setq url-proxy-services
+        '(("http" . "10.221.237.10:8080")
+          ("https" . "10.221.237.10:8080"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Initialize
@@ -446,18 +450,6 @@
 ;; Config.Packages.Programming.Scala
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(when (and window-system (eq 'darwin system-type))
-  (setenv "SCALA_HOME" "/usr/local/java/scala/bin/")
-  (setenv "SBT_HOME" "/usr/local/java/sbt/bin/")
-  (setenv "PATH" (format "%s:%s:%s"
-                         (getenv "PATH")
-                         (getenv "SCALA_HOME")
-                         (getenv "SBT_HOME")))
-  (setq exec-path
-        (append exec-path
-                (list (getenv "SCALA_HOME")
-                      (getenv "SBT_HOME")))))
-
 (use-package scala-mode
   :disabled t
   :ensure t
@@ -469,6 +461,17 @@
            (executable-find "sbt"))
   :config
   (add-hook 'scala-mode-hook 'ensime-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.R
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package ess-site
+  :ensure ess
+  :if (executable-find "R")
+  :config
+  (setq ess-ask-for-ess-directory nil)
+  (add-to-list 'auto-mode-alist '("\\.r" . R-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
