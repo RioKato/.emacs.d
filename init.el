@@ -463,17 +463,6 @@
   (add-hook 'scala-mode-hook 'ensime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.R
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package ess-site
-  :ensure ess
-  :if (executable-find "R")
-  :config
-  (setq ess-ask-for-ess-directory nil)
-  (add-to-list 'auto-mode-alist '("\\.r" . R-mode)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
