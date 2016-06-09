@@ -463,6 +463,22 @@
   (add-hook 'scala-mode-hook 'ensime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.SQL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package sql
+  :ensure t)
+
+(use-package sql-indent
+  :ensure t
+  :if (package-installed-p 'sql)
+  :config
+  (setq sql-indent-offset 2)
+  (setq indent-tabs-mode nil)
+  (when (executable-find "mysql")
+    (sql-set-product "mysql")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
