@@ -71,6 +71,12 @@
                        (getenv "R_HOME")))
 (add-to-list 'exec-path (getenv "R_HOME"))
 
+(setenv "CABAL_HOME" "/Users/Ryo/Library/Haskell/bin/ghc-mod")
+(setenv "PATH" (format "%s:%s"
+                       (getenv "PATH")
+                       (getenv "CABAL_HOME")))
+(add-to-list 'exec-path (getenv "CABAL_HOME"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Keymap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -461,6 +467,30 @@
            (executable-find "sbt"))
   :config
   (add-hook 'scala-mode-hook 'ensime-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Haskell
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package haskell-mode
+  :ensure t)
+
+(use-package ghc-mod
+  :ensure t
+  :if (executable-find "ghc"))
+
+(use-package cl-lib
+  :ensure t)
+
+(use-package company-ghc
+  :ensure t
+  :if (and (package-installed-p 'ghc-mod)
+           (package-installed-p 'cl-lib))
+  :config
+  (add-hook 'haskell-mode-hook
+            '(lambda ()
+               (add-to-list 'company-backends
+                            'company-ghc))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.SQL
