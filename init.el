@@ -51,31 +51,25 @@
 ;; Config.Environment
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setenv "PATH" "/bin:/usr/bin:/usr/local/bin")
-(setq exec-path '("/bin" "/usr/bin" "/usr/local/bin"))
-
-(setenv "SCALA_HOME" "/usr/local/java/scala/bin/")
-(setenv "SBT_HOME" "/usr/local/java/sbt/bin/")
-(setenv "PATH" (format "%s:%s:%s"
-                       (getenv "PATH")
-                       (getenv "SCALA_HOME")
-                       (getenv "SBT_HOME")))
 (setq exec-path
-      (append exec-path
-              (list (getenv "SCALA_HOME")
-                    (getenv "SBT_HOME"))))
+      '("/bin"
+        "/usr/bin"
+        "/usr/local/bin"
+        "/usr/local/java/scala/bin"
+        "/usr/local/java/sbt/bin"
+        "/Users/Ryo/Library/Haskell/bin"
+        "/Applications/R.app/Contents/MacOS"))
 
-(setenv "R_HOME" "/Applications/R.app/Contents/MacOS")
-(setenv "PATH" (format "%s:%s"
-                       (getenv "PATH")
-                       (getenv "R_HOME")))
-(add-to-list 'exec-path (getenv "R_HOME"))
-
-(setenv "CABAL_HOME" "/Users/Ryo/Library/Haskell/bin/ghc-mod")
-(setenv "PATH" (format "%s:%s"
-                       (getenv "PATH")
-                       (getenv "CABAL_HOME")))
-(add-to-list 'exec-path (getenv "CABAL_HOME"))
+(setenv "PATH"
+        (cond ((null exec-path) "")
+              ((null (cdr exec-path)) (car exec-path))
+              (:else
+               (let ((path (car exec-path))
+                     (temp (cdr exec-path)))
+                 (while temp
+                   (setq path (format "%s:%s" path (car temp)))
+                   (setq temp (cdr temp)))
+                 path))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Keymap
@@ -473,18 +467,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package haskell-mode
-  :ensure t)
-
-(use-package ghc-mod
   :ensure t
-  :if (executable-find "ghc"))
+  :config
+  (add-hook 'haskell-mode-hook 'inf-haskell-mode))
+
+(use-package ghc
+  :ensure t
+  :if (executable-find "ghc-mod"))
 
 (use-package cl-lib
   :ensure t)
 
 (use-package company-ghc
   :ensure t
-  :if (and (package-installed-p 'ghc-mod)
+  :if (and (package-installed-p 'ghc)
            (package-installed-p 'cl-lib))
   :config
   (add-hook 'haskell-mode-hook
