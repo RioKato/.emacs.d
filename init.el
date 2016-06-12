@@ -320,6 +320,9 @@
             (let (eldoc-documentation-function)
               (eldoc-print-current-symbol-info))))))
 
+(use-package flycheck
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -491,6 +494,14 @@
             '(lambda ()
                (add-to-list 'company-backends
                             'company-ghc))))
+
+(when (and (package-installed-p 'haskell-mode)
+           (package-installed-p 'flycheck)
+           (executable-find "hlint"))
+  (add-hook 'haskell-mode-hook
+            '(lambda ()
+               (setq flycheck-checker 'haskell-hlint)
+               (flycheck-mode 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.SQL
