@@ -520,6 +520,21 @@
     (sql-set-product "mysql")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Ruby
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package ruby-mode
+  :if (executable-find "ruby")
+  :config
+  (when (package-installed-p 'flycheck)
+    (add-hook 'ruby-mode 'flycheck-mode)))
+
+(use-package inf-ruby
+  :if (executable-find "irb")
+  :config
+  (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
