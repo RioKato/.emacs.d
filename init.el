@@ -535,6 +535,13 @@
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Groovy
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package groovy-mode
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
