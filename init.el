@@ -58,6 +58,7 @@
         "/usr/local/java/scala/bin"
         "/usr/local/java/sbt/bin"
         "/Users/Ryo/Library/Haskell/bin"
+        "/Users/Ryo/.cargo/bin"
         "/Applications/R.app/Contents/MacOS"))
 
 (setenv "PATH"
@@ -476,7 +477,13 @@
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
   (add-hook 'haskell-mode-hook 'font-lock-mode)
   (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
-  (add-hook 'haskell-mode-hook 'inf-haskell-mode))
+  (add-hook 'haskell-mode-hook 'inf-haskell-mode)
+  (when (and (package-installed-p 'flycheck)
+             (executable-find "hlint"))
+    (add-hook 'haskell-mode-hook
+              '(lambda ()
+                 (setq flycheck-checker 'haskell-hlint)
+                 (flycheck-mode 1)))))
 
 (use-package ghc
   :ensure t
@@ -494,14 +501,6 @@
             '(lambda ()
                (add-to-list 'company-backends
                             'company-ghc))))
-
-(when (and (package-installed-p 'haskell-mode)
-           (package-installed-p 'flycheck)
-           (executable-find "hlint"))
-  (add-hook 'haskell-mode-hook
-            '(lambda ()
-               (setq flycheck-checker 'haskell-hlint)
-               (flycheck-mode 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.SQL
@@ -549,4 +548,31 @@
   :if (executable-find "python")
   :config
   (setq python-indent-guess-indent-offset nil))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Rust
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package rust-mode
+  :ensure t
+  :if (executable-find "rustc"))
+
+(use-package flycheck-rust
+  :ensure t
+  :if (package-installed-p 'flycheck)
+  :config
+  (add-hook 'rust-mode-hook
+            '(lambda ()
+               (add-hook 'flycheck-mode-hook
+                         'flycheck-rust-setup))))
+
+(use-package racer
+  :ensure t
+  :if (executable-find "racer")
+  :config
+  (setenv "RUST_SRC_PATH" "/Users/Ryo/.cargo/rustc-1.9.0/src")
+  (add-hook 'racer-mode-hook 'company-mode)
+  (add-hook 'racer-mode-hook 'eldoc-mode)
+  (add-hook 'rust-mode-hook 'racer-mode))
+
 
