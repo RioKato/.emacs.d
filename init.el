@@ -451,6 +451,23 @@
   (define-key clojure-mode-map (kbd "C-c j") 'javadoc-lookup))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.Scheme
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package scheme
+  :config
+  (when (executable-find "gosh")
+    (setq scheme-program-name "gosh -i"))
+  (add-hook 'scheme-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook
+                        (lambda ()
+                          (align-range :all 'indent-region)
+                          nil t))))
+  (add-hook 'scheme-mode-hook 'show-paren-mode)
+  (add-hook 'scheme-mode-hook 'showmatch-minor-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Scala
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
