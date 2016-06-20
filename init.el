@@ -520,22 +520,6 @@
                             'company-ghc))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.SQL
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package sql
-  :ensure t)
-
-(use-package sql-indent
-  :ensure t
-  :if (package-installed-p 'sql)
-  :config
-  (setq sql-indent-offset 2)
-  (setq indent-tabs-mode nil)
-  (when (executable-find "mysql")
-    (sql-set-product "mysql")))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Ruby
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -551,13 +535,6 @@
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.Groovy
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package groovy-mode
-  :ensure t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -567,29 +544,18 @@
   (setq python-indent-guess-indent-offset nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.Rust
+;; Config.Packages.Programming.SQL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package rust-mode
-  :ensure t
-  :if (executable-find "rustc"))
+(use-package sql
+  :ensure t)
 
-(use-package flycheck-rust
+(use-package sql-indent
   :ensure t
-  :if (package-installed-p 'flycheck)
+  :if (package-installed-p 'sql)
   :config
-  (add-hook 'rust-mode-hook
-            '(lambda ()
-               (add-hook 'flycheck-mode-hook
-                         'flycheck-rust-setup))))
-
-(use-package racer
-  :ensure t
-  :if (executable-find "racer")
-  :config
-  (setenv "RUST_SRC_PATH" "/Users/Ryo/.cargo/rustc-1.9.0/src")
-  (add-hook 'racer-mode-hook 'company-mode)
-  (add-hook 'racer-mode-hook 'eldoc-mode)
-  (add-hook 'rust-mode-hook 'racer-mode))
-
+  (setq sql-indent-offset 2)
+  (setq indent-tabs-mode nil)
+  (when (executable-find "mysql")
+    (sql-set-product "mysql")))
 
