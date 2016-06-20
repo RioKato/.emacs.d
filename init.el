@@ -465,7 +465,13 @@
                           (align-range :all 'indent-region)
                           nil t))))
   (add-hook 'scheme-mode-hook 'show-paren-mode)
-  (add-hook 'scheme-mode-hook 'showmatch-minor-mode))
+  (add-hook 'scheme-mode-hook 'showmatch-minor-mode)
+  (add-hook 'scheme-mode-hook
+            (lambda ()
+              (define-key scheme-mode-map (kbd "C-c C-c")
+                (lambda ()
+                  (interactive)
+                  (align-range :defun 'scheme-send-region))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Scala
@@ -498,9 +504,9 @@
   (when (and (package-installed-p 'flycheck)
              (executable-find "hlint"))
     (add-hook 'haskell-mode-hook
-              '(lambda ()
-                 (setq flycheck-checker 'haskell-hlint)
-                 (flycheck-mode 1)))))
+              (lambda ()
+                (setq flycheck-checker 'haskell-hlint)
+                (flycheck-mode 1)))))
 
 (use-package ghc
   :ensure t
@@ -515,9 +521,9 @@
            (package-installed-p 'cl-lib))
   :config
   (add-hook 'haskell-mode-hook
-            '(lambda ()
-               (add-to-list 'company-backends
-                            'company-ghc))))
+            (lambda ()
+              (add-to-list 'company-backends
+                           'company-ghc))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Ruby
