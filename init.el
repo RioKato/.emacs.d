@@ -458,20 +458,20 @@
   :config
   (when (executable-find "gosh")
     (setq scheme-program-name "gosh -i"))
+  (add-hook 'scheme-mode-hook 'show-paren-mode)
+  (add-hook 'scheme-mode-hook 'showmatch-minor-mode)
   (add-hook 'scheme-mode-hook
             (lambda ()
               (add-hook 'before-save-hook
                         (lambda ()
                           (align-range :all 'indent-region)
-                          nil t))))
-  (add-hook 'scheme-mode-hook 'show-paren-mode)
-  (add-hook 'scheme-mode-hook 'showmatch-minor-mode)
-  (add-hook 'scheme-mode-hook
-            (lambda ()
+                          nil t))
               (define-key scheme-mode-map (kbd "C-c C-c")
                 (lambda ()
                   (interactive)
-                  (align-range :defun 'scheme-send-region))))))
+                  (align-range :defun 'scheme-send-region)))
+              (put 'when 'scheme-indent-function 1)
+              (put 'unless 'scheme-indent-function 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Scala
