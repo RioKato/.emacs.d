@@ -356,18 +356,6 @@
     (define-key-showmatch map "}")
     (identity map)))
 
-(defun show-buffer-backward-search (name regexp &optional repeat)
-  (interactive "b\ns\np")
-  (let ((buffer (get-buffer name)))
-    (when buffer
-      (with-current-buffer buffer
-        (save-excursion
-          (goto-char (point-max))
-          (if (re-search-backward regexp nil t repeat)
-              (beginning-of-line)
-            (goto-char (point-min)))
-          (message "%s" (buffer-substring-no-properties (point) (point-max))))))))
-
 (defun align-range (range-type f)
   (cond ((eq :all range-type)
          (save-excursion
@@ -434,10 +422,10 @@
   :ensure t
   :if (executable-find "lein")
   :config
-  (define-key clojure-mode-map (kbd "C-c C-d")
-    (lambda ()
-      (interactive)
-      (show-buffer-backward-search "*inf-clojure*" "^[a-zA-Z0-9\.-_]*=>" 2)))
+  (defun clojure ()
+    (interactive)
+    (call-interactively 'inf-clojure)
+    (inf-clojure-eval-string "(set! *print-length* 25)"))
   (setq inf-clojure-prompt-read-only t)
   (add-hook 'inf-clojure-mode-hook 'company-mode)
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
