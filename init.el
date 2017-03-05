@@ -39,7 +39,11 @@
 ;; Config.Editor
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(custom-set-variables '(tab-width 4))
+(custom-set-variables
+ '(package-selected-packages
+   (quote
+    (sql-indent company-ghc ghc haskell-mode ensime javadoc-lookup inf-clojure clojure-mode slime-company flycheck atom-dark-theme volatile-highlights anzu undohist undo-tree company sr-speedbar powerline smooth-scroll migemo switch-window smex use-package)))
+ '(tab-width 4))
 (setq-default indent-tabs-mode nil)
 (setq-default truncate-lines t)
 (setq-default truncate-partial-width-windows t)
@@ -422,10 +426,6 @@
   :ensure t
   :if (executable-find "lein")
   :config
-  (defun clojure ()
-    (interactive)
-    (call-interactively 'inf-clojure)
-    (inf-clojure-eval-string "(set! *print-length* 25)"))
   (setq inf-clojure-prompt-read-only t)
   (add-hook 'inf-clojure-mode-hook 'company-mode)
   (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
