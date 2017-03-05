@@ -39,11 +39,6 @@
 ;; Config.Editor
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(custom-set-variables
- '(package-selected-packages
-   (quote
-    (sql-indent company-ghc ghc haskell-mode ensime javadoc-lookup inf-clojure clojure-mode slime-company flycheck atom-dark-theme volatile-highlights anzu undohist undo-tree company sr-speedbar powerline smooth-scroll migemo switch-window smex use-package)))
- '(tab-width 4))
 (setq-default indent-tabs-mode nil)
 (setq-default truncate-lines t)
 (setq-default truncate-partial-width-windows t)
@@ -146,6 +141,10 @@
              (package-install 'use-package))
            (require 'use-package))
   (defmacro use-package (&rest args)))
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.System
@@ -393,16 +392,14 @@
           (executable-find "dx86cl")
           (executable-find "dx86cl64")))
 
-(use-package slime-company
-  :ensure t
-  :if inferior-lisp-program)
-
 (use-package slime
   :ensure t
   :if inferior-lisp-program
   :config
+  (use-package slime
+    :ensure t)
   (setq slime-net-coding-system 'utf-8-unix)
-  (slime-setup '(slime-repl slime-banner slime-fancy slime-company))
+  (slime-setup '(slime-banner slime-fancy slime-company))
   (add-hook 'lisp-mode-hook 'slime-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
