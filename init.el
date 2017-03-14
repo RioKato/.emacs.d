@@ -396,7 +396,7 @@
   :ensure t
   :if inferior-lisp-program
   :config
-  (use-package slime
+  (use-package slime-company
     :ensure t)
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-banner slime-fancy slime-company))
