@@ -143,15 +143,13 @@
   (defmacro use-package (&rest args)))
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
 (when (file-exists-p custom-file)
   (load custom-file))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.System
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package cl
-  :ensure t)
 
 (use-package ido
   :config
@@ -232,35 +230,7 @@
 (use-package undo-tree
   :ensure t
   :config
-  (global-undo-tree-mode t)
-
-  (when (package-installed-p 'cl)
-    (with-no-warnings
-      (defun undo-tree-recover-window-init ()
-        (defvar undo-tree-recover-window nil)
-        (put 'undo-tree-recover-window (lambda () nil) t)
-        (make-variable-buffer-local 'undo-tree-recover-window))
-
-      (lexical-let ((undo-tree-visualize.old (symbol-function 'undo-tree-visualize)))
-        (defun undo-tree-visualize ()
-          (interactive)
-          (let ((window-openp (= 1 (count-if-not 'window-dedicated-p (window-list)))))
-            (funcall undo-tree-visualize.old)
-            (setq undo-tree-recover-window
-                  (if window-openp
-                      (lexical-let ((current-window (get-buffer-window)))
-                        (lambda ()
-                          (delete-window current-window)))
-                    (lambda () nil))))))
-
-      (lexical-let ((undo-tree-visualizer-quit.old (symbol-function 'undo-tree-visualizer-quit)))
-        (defun undo-tree-visualizer-quit ()
-          (interactive)
-          (let ((temp undo-tree-recover-window))
-            (funcall undo-tree-visualizer-quit.old)
-            (funcall temp))))
-
-      (add-hook 'undo-tree-visualizer-mode-hook 'undo-tree-recover-window-init))))
+  (global-undo-tree-mode t))
 
 (use-package undohist
   :ensure t
@@ -396,11 +366,11 @@
   :ensure t
   :if inferior-lisp-program
   :config
-  (use-package slime-company
-    :ensure t)
   (setq slime-net-coding-system 'utf-8-unix)
-  (slime-setup '(slime-banner slime-fancy slime-company))
-  (add-hook 'lisp-mode-hook 'slime-mode))
+  (use-package slime-company
+    :ensure t
+    :config
+    (slime-setup '(slime-banner slime-fancy slime-repl slime-company))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.Clojure
@@ -510,21 +480,6 @@
             (lambda ()
               (add-to-list 'company-backends
                            'company-ghc))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Config.Packages.Programming.Ruby
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package ruby-mode
-  :if (executable-find "ruby")
-  :config
-  (when (package-installed-p 'flycheck)
-    (add-hook 'ruby-mode 'flycheck-mode)))
-
-(use-package inf-ruby
-  :if (executable-find "irb")
-  :config
-  (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Python
