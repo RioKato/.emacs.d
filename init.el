@@ -119,10 +119,10 @@
 ;; Config.Network.Proxy
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(when (member (system-name) '())
-  (setq url-proxy-services
-        '(("http" . "10.221.237.10:8080")
-          ("https" . "10.221.237.10:8080"))))
+;; (when (member (system-name) '())
+;;   (setq url-proxy-services
+;;         '(("http" . "10.221.237.10:8080")
+;;           ("https" . "10.221.237.10:8080"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Initialize
@@ -130,11 +130,11 @@
 
 (if (require 'package nil t)
     (progn (add-to-list 'package-archives
-                        '("melpa" . "https://melpa.org/packages/") t)
+                        '("melpa" . "http://melpa.org/packages/") t)
            (add-to-list 'package-archives
-                        '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+                        '("melpa-stable" . "http://stable.melpa.org/packages/") t)
            (add-to-list 'package-archives
-                        '("marmalade" . "https://marmalade-repo.org/packages/") t)
+                        '("marmalade" . "http://marmalade-repo.org/packages/") t)
            (package-initialize)
            (unless (package-installed-p 'use-package)
              (package-refresh-contents)
@@ -214,6 +214,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package company
+  :disabled t
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
@@ -226,6 +227,16 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (global-set-key (kbd "C-i") 'company-indent-or-complete-common))
+
+(use-package auto-complete
+  :ensure t
+  :config
+  (ac-config-default)
+  (setq ac-auto-start 1)
+  ;; (setq ac-auto-show-menu 0.1)
+  (setq ac-use-menu-map t)
+  (define-key ac-menu-map "\C-n" 'ac-next)
+  (define-key ac-menu-map "\C-p" 'ac-previous))
 
 (use-package undo-tree
   :ensure t
@@ -362,15 +373,24 @@
           (executable-find "dx86cl")
           (executable-find "dx86cl64")))
 
+(use-package ac-slime
+  :ensure t
+  :config
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+  (eval-after-load "auto-complete"
+    '(add-to-list 'ac-modes 'slime-repl-mode)))
+
+(use-package slime-company
+  :disabled t
+  :ensure t)
+
 (use-package slime
   :ensure t
   :if inferior-lisp-program
   :config
   (setq slime-net-coding-system 'utf-8-unix)
-  (use-package slime-company
-    :ensure t
-    :config
-    (slime-setup '(slime-banner slime-fancy slime-repl slime-company))))
+  (slime-setup '(slime-banner slime-fancy slime-repl)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.Clojure
@@ -394,8 +414,8 @@
   :if (executable-find "lein")
   :config
   (setq inf-clojure-prompt-read-only t)
-  (add-hook 'inf-clojure-mode-hook 'company-mode)
-  (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
+  ;; (add-hook 'inf-clojure-mode-hook 'company-mode)
+  ;; (add-hook 'inf-clojure-minor-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'eldoc-mode)
   (add-hook 'inf-clojure-mode-hook 'eldoc-mode)
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
@@ -472,6 +492,7 @@
   :ensure t)
 
 (use-package company-ghc
+  :disabled t
   :ensure t
   :if (and (package-installed-p 'ghc)
            (package-installed-p 'cl-lib))
