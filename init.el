@@ -233,7 +233,7 @@
   :config
   (ac-config-default)
   (setq ac-auto-start 1)
-  ;; (setq ac-auto-show-menu 0.1)
+  (setq ac-auto-show-menu 0.5)
   (setq ac-use-menu-map t)
   (define-key ac-menu-map "\C-n" 'ac-next)
   (define-key ac-menu-map "\C-p" 'ac-previous))
@@ -378,8 +378,7 @@
   :config
   (add-hook 'slime-mode-hook 'set-up-slime-ac)
   (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-  (eval-after-load "auto-complete"
-    '(add-to-list 'ac-modes 'slime-repl-mode)))
+  (add-to-list 'ac-modes 'slime-repl-mode))
 
 (use-package slime-company
   :disabled t
