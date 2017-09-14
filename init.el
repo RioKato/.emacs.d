@@ -53,12 +53,7 @@
 (setq exec-path
       '("/bin"
         "/usr/bin"
-        "/usr/local/bin"
-        "/usr/local/java/scala/bin"
-        "/usr/local/java/sbt/bin"
-        "/Users/Ryo/Library/Haskell/bin"
-        "/Users/Ryo/.cargo/bin"
-        "/Applications/R.app/Contents/MacOS"))
+        "/usr/local/bin"))
 
 (setenv "PATH"
         (cond ((null exec-path) "")
