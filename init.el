@@ -214,7 +214,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package company
-  :disabled t
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
@@ -229,6 +228,7 @@
   (global-set-key (kbd "C-i") 'company-indent-or-complete-common))
 
 (use-package auto-complete
+  :disabled t
   :ensure t
   :config
   (ac-config-default)
@@ -396,6 +396,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package clojure-mode
+  :disabled t
   :ensure t
   :config
   (add-hook 'clojure-mode-hook
@@ -409,6 +410,7 @@
   (add-hook 'clojure-mode-hook 'showmatch-minor-mode))
 
 (use-package inf-clojure
+  :disabled t
   :ensure t
   :if (executable-find "lein")
   :config
@@ -423,6 +425,15 @@
   :ensure t
   :config
   (define-key clojure-mode-map (kbd "C-c j") 'javadoc-lookup))
+
+(use-package cider
+  :ensure t
+  :init
+  (add-hook 'cider-mode-hook #'clj-refactor-mode)
+  (add-hook 'cider-mode-hook #'company-mode)
+  (add-hook 'cider-mode-hook #'eldoc-mode)
+  (add-hook 'cider-repl-mode-hook #'company-mode)
+  (add-hook 'cider-repl-mode-hook #'eldoc-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Scheme
