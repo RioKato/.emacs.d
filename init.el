@@ -211,6 +211,22 @@
 (use-package company
   :ensure t
   :config
+  (custom-set-faces
+   '(company-preview
+     ((t (:foreground "darkgray" :underline t))))
+   '(company-preview-common
+     ((t (:inherit company-preview))))
+   '(company-tooltip
+     ((t (:background "lightgray" :foreground "black"))))
+   '(company-tooltip-selection
+     ((t (:background "steelblue" :foreground "white"))))
+   '(company-tooltip-common
+     ((((type x)) (:inherit company-tooltip :weight bold))
+      (t (:inherit company-tooltip))))
+   '(company-tooltip-common-selection
+     ((((type x)) (:inherit company-tooltip-selection :weight bold))
+      (t (:inherit company-tooltip-selection)))))
+
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 1)
@@ -258,12 +274,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package atom-dark-theme
+  :disabled t
   :ensure t
   :config
   (load-theme 'atom-dark t))
 
 (use-package pastelmac-theme
-  :disabled t
   :ensure t
   :config
   (load-theme 'pastelmac t))
@@ -417,6 +433,7 @@
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 
 (use-package javadoc-lookup
+  :disabled t
   :ensure t
   :config
   (define-key clojure-mode-map (kbd "C-c j") 'javadoc-lookup))
