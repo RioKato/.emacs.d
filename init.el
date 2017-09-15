@@ -407,7 +407,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package clojure-mode
-  :disabled t
   :ensure t
   :config
   (add-hook 'clojure-mode-hook
