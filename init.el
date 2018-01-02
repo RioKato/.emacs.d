@@ -191,6 +191,7 @@
   (powerline-default-theme))
 
 (use-package sr-speedbar
+  :disabled t
   :ensure t
   :config
   (setq sr-speedbar-delete-windows t)
@@ -280,6 +281,7 @@
   (load-theme 'atom-dark t))
 
 (use-package pastelmac-theme
+  :disabled t
   :ensure t
   :config
   (load-theme 'pastelmac t))
@@ -318,6 +320,26 @@
 
 (use-package flycheck
   :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Programming.C
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package cc-mode
+  :ensure t
+  :config
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (setq c-default-style "k&r")
+              (setq indent-tabs-mode nil)
+              (setq c-basic-offset 2))))
+
+(use-package c-eldoc
+  :ensure t
+  :config
+  (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+  (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode)
+  (setq c-eldoc-buffer-regenerate-time 60))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp
