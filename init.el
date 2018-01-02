@@ -321,6 +321,14 @@
 (use-package flycheck
   :ensure t)
 
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.C
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
