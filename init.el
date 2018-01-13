@@ -338,9 +338,9 @@
   :config
   (add-hook 'c-mode-common-hook
             (lambda ()
-              (setq c-default-style "k&r")
+              (setq c-default-style "stroustrup")
               (setq indent-tabs-mode nil)
-              (setq c-basic-offset 2))))
+              (setq c-basic-offset 4))))
 
 (use-package c-eldoc
   :ensure t
