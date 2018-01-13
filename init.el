@@ -340,7 +340,9 @@
             (lambda ()
               (setq c-default-style "stroustrup")
               (setq indent-tabs-mode nil)
-              (setq c-basic-offset 4))))
+              (setq c-basic-offset 4)))
+  :mode (("\\.cpp\\" . c-mode)
+         ("\\.hpp\\" . c-mode)))
 
 (use-package c-eldoc
   :ensure t
