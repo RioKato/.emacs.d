@@ -436,6 +436,7 @@
 
 (if (executable-find "ros")
     ;; ros install slime
+    (setq inferior-lisp-program "ros -Q run")
     (load (expand-file-name "~/.roswell/helper.el")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
