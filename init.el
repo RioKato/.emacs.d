@@ -210,6 +210,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package company
+  :disabled t
   :ensure t
   :config
   (custom-set-faces
@@ -240,7 +241,6 @@
   (global-set-key (kbd "C-i") 'company-indent-or-complete-common))
 
 (use-package auto-complete
-  :disabled t
   :ensure t
   :config
   (ac-config-default)
@@ -429,10 +429,13 @@
 
 (use-package slime
   :ensure t
-  :if inferior-lisp-program
+  :if (and inferior-lisp-program (not (executable-find "ros")))
   :config
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-banner slime-fancy slime-repl)))
+
+(if (executable-find "ros")
+    (load (expand-file-name "~/.roswell/helper.el")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.Clojure
