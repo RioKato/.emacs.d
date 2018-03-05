@@ -435,6 +435,7 @@
   (slime-setup '(slime-banner slime-fancy slime-repl)))
 
 (if (executable-find "ros")
+    ;; ros install slime
     (load (expand-file-name "~/.roswell/helper.el")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
