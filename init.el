@@ -410,7 +410,8 @@
   (add-hook 'lisp-mode-hook 'showmatch-minor-mode))
 
 (setq inferior-lisp-program
-      (or (executable-find "sbcl")
+      (or (executable-find "ros")
+          (executable-find "sbcl")
           (executable-find "ccl")
           (executable-find "ccl64")
           (executable-find "dx86cl")
