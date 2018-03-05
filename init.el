@@ -416,6 +416,15 @@
           (executable-find "dx86cl")
           (executable-find "dx86cl64")))
 
+(use-package slime
+  :ensure t
+  :if inferior-lisp-program
+  :config
+  (if (executable-find "ros")
+      (setq inferior-lisp-program "ros run"))
+  (setq slime-net-coding-system 'utf-8-unix)
+  (slime-setup '(slime-banner slime-fancy slime-repl)))
+
 (use-package ac-slime
   :ensure t
   :config
@@ -426,18 +435,6 @@
 (use-package slime-company
   :disabled t
   :ensure t)
-
-(use-package slime
-  :ensure t
-  :if (and inferior-lisp-program (not (executable-find "ros")))
-  :config
-  (setq slime-net-coding-system 'utf-8-unix)
-  (slime-setup '(slime-banner slime-fancy slime-repl)))
-
-(if (executable-find "ros")
-    ;; ros install slime
-    (setq inferior-lisp-program "ros -Q run")
-    (load (expand-file-name "~/.roswell/helper.el")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.Clojure
