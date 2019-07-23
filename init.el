@@ -50,21 +50,21 @@
 ;; Config.Environment
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq exec-path
-      '("/bin"
-        "/usr/bin"
-        "/usr/local/bin"))
+;; (setq exec-path
+;;       '("/bin"
+;;         "/usr/bin"
+;;         "/usr/local/bin"))
 
-(setenv "PATH"
-        (cond ((null exec-path) "")
-              ((null (cdr exec-path)) (car exec-path))
-              (:else
-               (let ((path (car exec-path))
-                     (temp (cdr exec-path)))
-                 (while temp
-                   (setq path (format "%s:%s" path (car temp)))
-                   (setq temp (cdr temp)))
-                 path))))
+;; (setenv "PATH"
+;;         (cond ((null exec-path) "")
+;;               ((null (cdr exec-path)) (car exec-path))
+;;               (:else
+;;                (let ((path (car exec-path))
+;;                      (temp (cdr exec-path)))
+;;                  (while temp
+;;                    (setq path (format "%s:%s" path (car temp)))
+;;                    (setq temp (cdr temp)))
+;;                  path))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Keymap
@@ -436,6 +436,30 @@
 (use-package slime-company
   :disabled t
   :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.Packages.Rust
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package rust-mode
+  :ensure t
+  :if (executable-find "cargo")
+  :config
+  (setq-default rust-format-on-save t)
+  :mode (("\\.rs\\'" . rust-mode)))
+
+(use-package racer
+  :ensure t
+  :if (executable-find "racer")
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode))
+
+(use-package flycheck-rust
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'flycheck-rust-setup))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Config.Packages.Programming.Lisp.Clojure
