@@ -452,7 +452,11 @@
   :ensure t
   :if (executable-find "racer")
   :config
-  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'rust-mode-hook
+            (lambda ()
+              (company-mode)
+              (set (make-variable-buffer-local 'company-idle-delay) 0.1)
+              (set (make-variable-buffer-local 'company-minimum-prefix-length) 0)))
   (add-hook 'racer-mode-hook #'eldoc-mode)
   (add-hook 'racer-mode-hook #'company-mode))
 
